@@ -14,7 +14,7 @@ function ProjectList({projects,onSave}:ProjectlistProps){
 
     const handleEdit=(project:Project):void=>{
         setprojectBeingEdited(project);
-        console.log(projectBeingEdited);
+    //console.log(projectBeingEdited);
     }
     const cancelEditing=():void=>{
         setprojectBeingEdited({});
@@ -50,9 +50,10 @@ function ProjectList({projects,onSave}:ProjectlistProps){
                     </div> */}
                  {/* <ProjectCard Project={project} onEdit={handleEdit} ></ProjectCard>
                  <ProjectForm /> */}
-
+                    {
                  project===projectBeingEdited?(<ProjectForm project={project} onCancel={cancelEditing} onSave={onSave}/>)
                  :(<ProjectCard Project={project} onEdit={handleEdit}/>)
+                    }               
                 </div>
             ))}
         </div>
