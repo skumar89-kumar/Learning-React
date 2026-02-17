@@ -13,7 +13,7 @@ function translateStatustoErrorMessage(Status:number):string{
 
 function checkStatus(response:any){
     if(response.ok){
-        return
+        return response;
     }
     else {
         const httpErrorInfo={
@@ -30,22 +30,22 @@ function checkStatus(response:any){
 }
 
 function parseJSON(response:Response){
-    return response.json;
+    return response.json();
 }
 
-function delay(ms:number){
-    return function(x:any):Promise<any>{
-        return new Promise((resolved)=>setTimeout(()=>resolved(x),ms))
-    };
-}
+// function delay(ms:number){
+//     return function(x:any):Promise<any>{
+//         return new Promise((resolved)=>setTimeout(()=>resolved(x),ms))
+//     };
+// }
 
 function converttoProjectModel(item:any):Project{
     return new Project(item);
 }
 
-function convertToProjectModels(data:any[]):Project[]{
-    const projects:Project[]=data.map(converttoProjectModel);
-    return projects
+function convertToProjectModels(res:{data:unknown[]}):Project[]{
+    const projects:Project[]=(res.data as unknown[]).map(converttoProjectModel);
+    return projects;
 }
 
 const ProjectAPI={
@@ -58,7 +58,7 @@ const ProjectAPI={
         .catch((error:TypeError)=>{
             console.log(`log client error:${error}`)
             throw new Error (`There was an error retrieving the projects. Please try again`);
-        })
+        });
 
     },
      put(project:Project){
@@ -75,8 +75,18 @@ const ProjectAPI={
         .catch((error:TypeError)=>{
             console.log(`log client error:${error}`)
             throw new Error (`There was an error updating the project. Please try again`);
+        });
+    },
+    find(id:number){
+         return fetch(`${baseUrl}/${id}`)
+        //.then(delay(1000))
+        .then(checkStatus)
+        .then(parseJSON)
+        .then(converttoProjectModel)
+        .catch((error:TypeError)=>{
+            console.log(`log client error:${error}`)
+            throw new Error (`There was an error retrieving the projects. Please try again`);
         })
-
     }
 };
 

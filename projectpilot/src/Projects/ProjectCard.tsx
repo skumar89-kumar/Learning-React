@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import Project from "./Project";
 
 function formatDescription( description:string):string{
@@ -24,11 +25,13 @@ const handleEditClick=(projectbeingEdited:Project)=>{
                     </img>
                   
                     <section className="section dark"> 
+                   <Link to={`/projects/${Project.id}`}>
                     <h5 className="strong">
                     <strong>{Project.name}</strong>
                     </h5>
                     <p>{formatDescription(Project.description)}</p>
                     <p>{Project.budget.toLocaleString()}</p>
+                   </Link>
                     <button className="btn bordered" onClick={()=>handleEditClick(Project)}>
                         <span className="icon-edit"> </span>
                         Edit Project
